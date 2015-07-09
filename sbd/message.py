@@ -45,6 +45,9 @@ class Message(object):
     def add_information_element(self, information_element):
         self._information_elements.append(information_element)
 
+    def get_information_element(self, index):
+        return self._information_elements[index]
+
 
 class InformationElement(object):
     """An Iridium message Information Element."""
