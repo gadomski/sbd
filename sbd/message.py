@@ -8,17 +8,32 @@ class Message(object):
     def read(cls, filename):
         """Reads an sbd message stored on the filesystem and returns the Message."""
         with open(filename, "rb") as f:
-            return Message.parse(f.read())
+            return Message.parse(f)
 
     @classmethod
-    def parse(cls, string):
+    def parse(cls, stream):
         message = cls()
-        message.protocol_revision_number, message.overall_message_length = struct.unpack("!bH", string[0:3])
-        index = 3
-        while index < message.overall_message_length:
-            information_element, offset = InformationElement.parse(string[index:])
-            message.add_information_element(information_element)
-            index += offset
+        message.protocol_revision_number, message.overall_message_length = struct.unpack("!bH", stream.read(3))
+        while True:
+            bytes_ = stream.read(3)
+            if not bytes_:
+                break
+            id_, length = struct.unpack("!bH", bytes_)
+            if id_ == 1:
+                iecls = MobileOriginatedHeader
+            elif id_ == 2:
+                iecls = MobileOriginatedPayload
+            elif id_ == 3:
+                iecls = MobileOriginatedLocationInformation
+            elif id_ == 41:
+                iecls = MobileTerminatedHeader
+            elif id_ == 42:
+                iecls = MobileTerminatedPayload
+            elif id_ == 44:
+                iecls = MobileTerminatedConfirmationMessage
+            else:
+                raise InvalidInformationElementId(id_)
+            message.add_information_element(iecls(id_, length, stream.read(length)))
         return message
 
     def __init__(self):
@@ -52,26 +67,6 @@ class Message(object):
 class InformationElement(object):
     """An Iridium message Information Element."""
 
-    @staticmethod
-    def parse(string):
-        id_, length = struct.unpack("!bH", string[0:3])
-        if id_ == 1:
-            cls = MobileOriginatedHeader
-        elif id_ == 2:
-            cls = MobileOriginatedPayload
-        elif id_ == 3:
-            cls = MobileOriginatedLocationInformation
-        elif id_ == 41:
-            cls = MobileTerminatedHeader
-        elif id_ == 42:
-            cls = MobileTerminatedPayload
-        elif id_ == 44:
-            cls = MobileTerminatedConfirmationMessage
-        information_element = cls(id_, length)
-        offset = 3 + length
-        information_element.read(string[4:offset])
-        return information_element, offset
-
     def __init__(self, id_, length):
         self._id = id_
         self._length = length
@@ -92,31 +87,40 @@ class InformationElement(object):
     def length(self, value):
         self._length = value
 
-    def read(self, string):
-        raise NotImplemented
-
 
 class MobileOriginatedHeader(InformationElement):
     
-    def __init__(self, id_, length):
+    def __init__(self, id_, length, data):
         super(MobileOriginatedHeader, self).__init__(id_, length)
-        self._cdr_reference = None
-
-    def read(self, string):
-        print struct.unpack(string[0:2], "!b")
-        self.cdr_reference, self.imei, self.session_status, self.momsn, \
-                self.mtmsn, self.time_of_session = struct.unpack(string, "!bHI15sBHHI")
+        self._cdr_reference, self._imei, self._session_status, \
+                self._momsn, self._mtmsn, self._time_of_session = struct.unpack("!I15sBHHI", data)
 
     @property
     def cdr_reference(self):
         return self._cdr_reference
 
-    @cdr_reference.setter
-    def cdr_reference(self, value):
-        self._cdr_reference = value
+    @property
+    def imei(self):
+        return self._imei
+
+    @property
+    def session_status(self):
+        return self._session_status
+
+    @property
+    def momsn(self):
+        return self._momsn
+
+    @property
+    def mtmsn(self):
+        return self._mtmsn
+
+    @property
+    def time_of_session(self):
+        return self._time_of_session
 
 
 class MobileOriginatedPayload(InformationElement):
 
-    def read(self, string):
-        None
+    def __init__(self, id_, length, data):
+        super(MobileOriginatedPayload, self).__init__(id_, length)
