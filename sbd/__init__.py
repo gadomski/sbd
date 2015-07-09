@@ -1,1 +1,1 @@
-from sbd.message import Message
+from sbd.message import MobileOriginatedMessage

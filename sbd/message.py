@@ -8,7 +8,7 @@ class Message(object):
     def read(cls, filename):
         """Reads an sbd message stored on the filesystem and returns the Message."""
         with open(filename, "rb") as f:
-            return Message.parse(f)
+            return cls.parse(f)
 
     @classmethod
     def parse(cls, stream):
@@ -62,6 +62,27 @@ class Message(object):
 
     def get_information_element(self, index):
         return self._information_elements[index]
+
+
+class MobileOriginatedMessage(Message):
+
+    @classmethod
+    def parse(cls, stream):
+        message = super(MobileOriginatedMessage, cls).parse(stream)
+        message.data = message.get_information_element(1).payload
+        return message
+
+    def __init__(self):
+        super(MobileOriginatedMessage, self).__init__()
+        self._data = None
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, value):
+        self._data = value
 
 
 class InformationElement(object):
@@ -124,3 +145,8 @@ class MobileOriginatedPayload(InformationElement):
 
     def __init__(self, id_, length, data):
         super(MobileOriginatedPayload, self).__init__(id_, length)
+        self._payload  = data
+
+    @property
+    def payload(self):
+        return self._payload

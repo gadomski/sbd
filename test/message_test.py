@@ -1,8 +1,8 @@
-from sbd import Message
+from sbd import MobileOriginatedMessage
 
 
 def read_test():
-    message = Message.read("data/test.sbd")
+    message = MobileOriginatedMessage.read("data/test.sbd")
     assert message.protocol_revision_number == 1
     assert message.overall_message_length == 56
 
