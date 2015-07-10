@@ -8,4 +8,7 @@ setup(name="sbd",
       author="Pete Gadomski",
       author_email="pete.gadomski@gmail.com",
       url="https://github.com/gadomski/sbd",
+      install_requires=[
+          "python-daemon",
+          ]
       )
