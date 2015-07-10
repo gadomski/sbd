@@ -19,8 +19,13 @@ class IridiumTcpHandler(SocketServer.StreamRequestHandler):
                 str(time_of_session.year), "%02d" % time_of_session.month)
         mkdir_p(directory)
         basename = time_of_session.strftime("%y%m%d_%H%M%S")
+        payload_file = os.path.join(directory, basename + ".payload")
+        sbd_file = os.path.join(directory, basename + ".sbd")
 
-        with open(os.path.join(directory, basename + ".payload"), "wb") as f:
+        if os.path.isfile(payload_file) or os.path.isfile(sbd_file):
+            self.server.logger.warn("Message recieved at {} has already been stored, skipping".format(time_of_session))
+
+        with open(payload_file, "wb") as f:
             f.write(message.payload)
-        with open(os.path.join(directory, basename + ".sbd"), "wb") as f:
+        with open(sbd_file, "wb") as f:
             f.write(string.getvalue())
