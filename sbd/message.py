@@ -150,3 +150,23 @@ class MobileOriginatedPayload(InformationElement):
     @property
     def payload(self):
         return self._payload
+
+
+class MobileOriginatedLocationInformation(InformationElement):
+    def __init__(self, id_, length):
+        raise NotImplemented
+
+
+class MobileTerminatedHeader(InformationElement):
+    def __init__(self, id_, length):
+        raise NotImplemented
+
+
+class MobileTerminatedPayload(InformationElement):
+    def __init__(self, id_, length):
+        raise NotImplemented
+
+
+class MobileTerminatedConfirmationMessage(InformationElement):
+    def __init__(self, id_, length):
+        raise NotImplemented
