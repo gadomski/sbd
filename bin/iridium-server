@@ -1,0 +1,10 @@
+#!/usr/bin/env python
+
+from sbd.server import IridiumTcpHandler
+
+HOST = "0.0.0.0",
+PORT = 10800
+
+server = SocketSErver.TCPServer((HOST, PORT), IridiumTcpHandler)
+
+server.server_forever()
