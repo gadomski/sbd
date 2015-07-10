@@ -10,13 +10,17 @@ from sbd.util import mkdir_p
 class IridiumTcpHandler(SocketServer.StreamRequestHandler):
 
     def handle(self):
-        now = datetime.datetime.utcnow()
-        directory = os.path.join(self.server.directory, str(now.year), "%02d" % now.month)
-        mkdir_p(directory)
-        basename = now.strftime("%y%m%d_%H%M%S")
         string = StringIO.StringIO(self.rfile.read())
         message = MobileOriginatedMessage.parse(string)
-        with open(os.path.join(directory, basename + ".txt"), "wb") as f:
+        time_of_session = datetime.datetime(1970, 1, 1, 0, 0, 0) + \
+                datetime.timedelta(seconds=message.time_of_session)
+
+        directory = os.path.join(self.server.directory, message.imei,
+                str(time_of_session.year), "%02d" % time_of_session.month)
+        mkdir_p(directory)
+        basename = time_of_session.strftime("%y%m%d_%H%M%S")
+
+        with open(os.path.join(directory, basename + ".payload"), "wb") as f:
             f.write(message.payload)
         with open(os.path.join(directory, basename + ".sbd"), "wb") as f:
             f.write(string.getvalue())

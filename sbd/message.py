@@ -69,12 +69,33 @@ class MobileOriginatedMessage(Message):
     @classmethod
     def parse(cls, stream):
         message = super(MobileOriginatedMessage, cls).parse(stream)
+        header = message.get_information_element(0)
+        message.time_of_session = header.time_of_session
+        message.imei = header.imei
         message.payload = message.get_information_element(1).payload
         return message
 
     def __init__(self):
         super(MobileOriginatedMessage, self).__init__()
+        self._time_of_session = None
+        self._imei = None
         self._payload = None
+
+    @property
+    def time_of_session(self):
+        return self._time_of_session
+
+    @time_of_session.setter
+    def time_of_session(self, value):
+        self._time_of_session = value
+
+    @property
+    def imei(self):
+        return self._imei
+
+    @imei.setter
+    def imei(self, value):
+        self._imei = value
 
     @property
     def payload(self):
