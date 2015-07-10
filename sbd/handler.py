@@ -11,7 +11,7 @@ class IridiumTcpHandler(SocketServer.StreamRequestHandler):
 
     def handle(self):
         now = datetime.datetime.utcnow()
-        directory = os.path.join(self.server.target_directory, str(now.year), "%02d" % now.month)
+        directory = os.path.join(self.server.directory, str(now.year), "%02d" % now.month)
         mkdir_p(directory)
         basename = now.strftime("%y%m%d_%H%M%S")
         string = StringIO.StringIO(self.rfile.read())
