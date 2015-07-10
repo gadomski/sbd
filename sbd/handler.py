@@ -23,7 +23,7 @@ class IridiumTcpHandler(SocketServer.StreamRequestHandler):
         sbd_file = os.path.join(directory, basename + ".sbd")
 
         if os.path.isfile(payload_file) or os.path.isfile(sbd_file):
-            self.server.logger.warn("Message recieved at {} has already been stored, skipping".format(time_of_session))
+            self.server.logger.warn("Message recieved at {0} has already been stored, skipping".format(time_of_session))
             return
 
         with open(payload_file, "wb") as f:
@@ -31,4 +31,4 @@ class IridiumTcpHandler(SocketServer.StreamRequestHandler):
         with open(sbd_file, "wb") as f:
             f.write(string.getvalue())
 
-        self.server.logger.info("Message recieved at {} stored OK".format(time_of_session))
+        self.server.logger.info("Message recieved at {0} stored OK".format(time_of_session))
