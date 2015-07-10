@@ -1,7 +1,9 @@
 import SocketServer
 
+from sbd import MobileOriginatedMessage
 
-class IridiumTCPHandler(SocketServer.BaseRequestHandler):
+
+class IridiumTcpHandler(SocketServer.StreamRequestHandler):
 
     def finish(self):
-        print self.rfile.read()
+        print MobileOriginatedMessage.parse(self.rfile).data
