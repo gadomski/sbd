@@ -12,9 +12,12 @@ class IridiumServer(SocketServer.TCPServer):
         self._logger = logging.getLogger(__name__)
 
         handler = logging.FileHandler(os.path.join(self._directory, "server.log"))
-        formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        formatter = logging.Formatter("%(levelname)s: %(asctime)s - %(message)s")
         handler.setFormatter(formatter)
         self._logger.addHandler(handler)
+
+    def handle_error(self, request, client_address):
+        self.logger.exception("Error when handling request from {}".format(client_address))
 
     @property
     def directory(self):
