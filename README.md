@@ -12,6 +12,8 @@ Installation
 pip install git+https://github.com/gadomski/sbd@master
 ```
 
+You may need to `sudo pip install` or `pip install --user` if you're on a permission-y system.
+
 
 Using the daemon
 ----------------
