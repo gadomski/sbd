@@ -17,7 +17,7 @@ class IridiumServer(SocketServer.TCPServer):
         self._logger.addHandler(handler)
 
     def handle_error(self, request, client_address):
-        self.logger.exception("Error when handling request from {}".format(client_address))
+        self.logger.exception("Error when handling request from {0}".format(client_address))
 
     @property
     def directory(self):
