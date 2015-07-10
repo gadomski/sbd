@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 
+import argparse
 import sys
 
 from sbd.server import IridiumServer
 
-if len(sys.argv) != 3:
-    print "Server requires two arguments"
-    print "Usage: iridium-server host target-directory"
-    sys.exit(1)
+parser = argparse.ArgumentParser(description="Iridium SBD message server")
+parser.add_argument("--host", help="client IP address",
+        default="0.0.0.0")
+parser.add_argument("--port", help="the port to listen upon",
+        default=10800)
+parser.add_argument("directory", help="the target directory in which to store messages and logs")
 
-HOST = sys.argv[1]
-PORT = 10800
+args = parser.parse_args()
 
-server = IridiumServer((HOST, PORT), sys.argv[2])
-
+server = IridiumServer((args.host, args.port), args.directory)
 server.serve_forever()
