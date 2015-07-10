@@ -17,6 +17,6 @@ class IridiumTcpHandler(SocketServer.StreamRequestHandler):
         string = StringIO.StringIO(self.rfile.read())
         message = MobileOriginatedMessage.parse(string)
         with open(os.path.join(directory, basename + ".txt"), "wb") as f:
-            f.write(message.data)
+            f.write(message.payload)
         with open(os.path.join(directory, basename + ".sbd"), "wb") as f:
             f.write(string.getvalue())
