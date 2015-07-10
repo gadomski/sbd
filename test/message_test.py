@@ -16,4 +16,4 @@ def read_test():
     assert header.mtmsn == 0, header.mtmsn
     assert header.time_of_session == 1436465708, header.time_of_session
 
-    assert message.data == "test message from pete"
+    assert message.payload == "test message from pete"

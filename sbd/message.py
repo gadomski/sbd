@@ -69,20 +69,20 @@ class MobileOriginatedMessage(Message):
     @classmethod
     def parse(cls, stream):
         message = super(MobileOriginatedMessage, cls).parse(stream)
-        message.data = message.get_information_element(1).payload
+        message.payload = message.get_information_element(1).payload
         return message
 
     def __init__(self):
         super(MobileOriginatedMessage, self).__init__()
-        self._data = None
+        self._payload = None
 
     @property
-    def data(self):
-        return self._data
+    def payload(self):
+        return self._payload
 
-    @data.setter
-    def data(self, value):
-        self._data = value
+    @payload.setter
+    def payload(self, value):
+        self._payload = value
 
 
 class InformationElement(object):
