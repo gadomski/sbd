@@ -1,9 +1,13 @@
 import SocketServer
 
-from sbd import MobileOriginatedMessage
+from sbd.handler import IridiumTcpHandler
 
+class IridiumServer(SocketServer.TCPServer):
 
-class IridiumTcpHandler(SocketServer.StreamRequestHandler):
+    def __init__(self, host_port, target_directory):
+        SocketServer.TCPServer.__init__(self, host_port, IridiumTcpHandler)
+        self._target_directory = target_directory
 
-    def handle(self):
-        print MobileOriginatedMessage.parse(self.rfile).data
+    @property
+    def target_directory(self):
+        return self._target_directory
