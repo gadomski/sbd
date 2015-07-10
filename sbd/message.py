@@ -88,9 +88,10 @@ class MobileOriginatedMessage(Message):
 class InformationElement(object):
     """An Iridium message Information Element."""
 
-    def __init__(self, id_, length):
+    def __init__(self, id_, length, data):
         self._id = id_
         self._length = length
+        self._data = data
 
     @property
     def id_(self):
@@ -112,7 +113,7 @@ class InformationElement(object):
 class MobileOriginatedHeader(InformationElement):
     
     def __init__(self, id_, length, data):
-        super(MobileOriginatedHeader, self).__init__(id_, length)
+        super(MobileOriginatedHeader, self).__init__(id_, length, data)
         self._cdr_reference, self._imei, self._session_status, \
                 self._momsn, self._mtmsn, self._time_of_session = struct.unpack("!I15sBHHI", data)
 
@@ -144,7 +145,7 @@ class MobileOriginatedHeader(InformationElement):
 class MobileOriginatedPayload(InformationElement):
 
     def __init__(self, id_, length, data):
-        super(MobileOriginatedPayload, self).__init__(id_, length)
+        super(MobileOriginatedPayload, self).__init__(id_, length, data)
         self._payload  = data
 
     @property
@@ -153,20 +154,20 @@ class MobileOriginatedPayload(InformationElement):
 
 
 class MobileOriginatedLocationInformation(InformationElement):
-    def __init__(self, id_, length):
+    def __init__(self, id_, length, data):
         raise NotImplemented
 
 
 class MobileTerminatedHeader(InformationElement):
-    def __init__(self, id_, length):
+    def __init__(self, id_, length, data):
         raise NotImplemented
 
 
 class MobileTerminatedPayload(InformationElement):
-    def __init__(self, id_, length):
+    def __init__(self, id_, length, data):
         raise NotImplemented
 
 
 class MobileTerminatedConfirmationMessage(InformationElement):
-    def __init__(self, id_, length):
+    def __init__(self, id_, length, data):
         raise NotImplemented
