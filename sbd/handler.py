@@ -10,6 +10,8 @@ from sbd.util import mkdir_p
 class IridiumTcpHandler(SocketServer.StreamRequestHandler):
 
     def handle(self):
+        self.server.logger.debug("Handling message from {0}".format(self.client_address))
+
         string = StringIO.StringIO(self.rfile.read())
         message = MobileOriginatedMessage.parse(string)
         time_of_session = datetime.datetime(1970, 1, 1, 0, 0, 0) + \

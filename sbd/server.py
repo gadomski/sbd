@@ -15,6 +15,7 @@ class IridiumServer(SocketServer.TCPServer):
         formatter = logging.Formatter("%(levelname)s: %(asctime)s - %(message)s")
         handler.setFormatter(formatter)
         self._logger.addHandler(handler)
+        self._logger.setLevel(logging.DEBUG)
 
     def handle_error(self, request, client_address):
         self.logger.exception("Error when handling request from {0}".format(client_address))
