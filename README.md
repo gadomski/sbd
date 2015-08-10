@@ -37,7 +37,7 @@ Monitor `server.log` for information about incoming messages and any problems th
 Using the library
 -----------------
 
-You can use the `sbd` library to parse Iridium messages, including those stored on the filesystem by the daemon.
+You can use the `sbd` Python package to parse Iridium messages, including those stored on the filesystem by the daemon.
 The parsing capabilities are not complete and are relatively undocumented, so you'll want to read through the tests or the source to get an idea of how to use things.
 
 
