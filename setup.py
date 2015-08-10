@@ -8,6 +8,7 @@ setup(name="sbd",
       author="Pete Gadomski",
       author_email="pete.gadomski@gmail.com",
       url="https://github.com/gadomski/sbd",
+      packages=["sbd"],
       scripts=["bin/iridiumd"],
       install_requires=[
           "python-daemon",
