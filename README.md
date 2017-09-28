@@ -1,6 +1,10 @@
 sbd
 ===
 
+**WARNING**: This package is no longer maintained.
+Development has been moved to [this Rust crate](https://github.com/gadomski/sbd-rs).
+This repository may disappear at some future date when I decide to do a cleanup.
+
 Python daemon and library for receiving and parsing Iridium Short Burst Data (SBD) messages.
 Known to work on Python 2.6 and 2.7 with only [one dependency](https://pypi.python.org/pypi/python-daemon/).
 
